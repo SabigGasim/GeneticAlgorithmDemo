@@ -21,16 +21,7 @@ public abstract class Box {
   }
 
   public void Draw() {
-    color c = this.Color;
-    color borderC = this.BorderColor;
-    for(var player : _mostFitPlayers){
-      if(this == player){
-         c = color(0,255,75);
-         borderC = c;
-         break;
-      }
-    }
-    fill(c);
+    Fill();
 
     noStroke();
     float rectX = this.Position.x;
@@ -38,9 +29,9 @@ public abstract class Box {
     float rectW = this.Width;
     float rectH = this.Height;
 
-    if (borderC != c) {
+    if (this.BorderColor != this.Color) {
       float strokeWeight = 2.0;
-      stroke(borderC);
+      stroke(this.BorderColor);
       strokeWeight(strokeWeight);
 
       float halfWeight = strokeWeight / 2.0;
@@ -51,6 +42,11 @@ public abstract class Box {
     }
 
     rect(rectX, rectY, rectW, rectH);
+  }
+  
+  protected void Fill()
+  {
+    fill(this.Color);
   }
 }
 
@@ -67,12 +63,24 @@ public class Player extends Box {
   public PVector Acceleration = new PVector(0,0);
   public Boolean IsAlive = true;
   public Boolean HasReachedGoal = false;
+  public Boolean IsParent = false;
   public float Fitness = 0.0;
   public int CurrentStep = 0;
+  public final color ParentColor = color(10, 194, 34);
 
-  public Player(float x, float y, int wid, int hei, color colour, color borderColour) {
+  public Player(float x, float y, int wid, int hei, color colour, color borderColour)
+  {
     super(x, y, wid, hei, colour, borderColour);
     InitSteps();
+  }
+  
+  public float GetFitness(){
+    return this.Fitness;
+  }
+  
+  @Override
+  protected void Fill(){
+    fill(this.IsParent ? this.ParentColor : this.Color);
   }
 
   public void TakeNextStep() {
@@ -127,6 +135,8 @@ public class Player extends Box {
     this.CurrentStep = 0;
     this.IsAlive = true;
     this.HasReachedGoal = false;
+    this.Velocity = new PVector(0,0);
+    this.Acceleration = new PVector(0,0);
     this.Position = _startingPoint.copy();
   }
 
@@ -137,12 +147,7 @@ public class Player extends Box {
     }
 
     for (int i = 0; i < player.Steps.length; i++) {
-      if (player.CurrentStep < i){
-        this.Steps[i] = player.Steps[i].copy();
-        continue;
-      }
-      
-      this.Steps[i] = PVector.fromAngle(random(2*PI));
+      this.Steps[i] = player.Steps[i].copy();
     }
   }
 }
