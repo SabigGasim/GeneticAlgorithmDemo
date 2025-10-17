@@ -58,7 +58,7 @@ public class Border extends Box {
 }
 
 public class Player extends Box {
-  public PVector[] Steps = new PVector[NUMBER_OF_STEPS];
+  public PVector[] Steps = new PVector[Game.NUMBER_OF_STEPS];
   public PVector Velocity = new PVector(0,0);
   public PVector Acceleration = new PVector(0,0);
   public Boolean IsAlive = true;
@@ -84,7 +84,12 @@ public class Player extends Box {
   }
 
   public void TakeNextStep() {
-    if (this.CurrentStep >= NUMBER_OF_STEPS)
+    if(this.HasReachedGoal)
+    { //<>//
+      
+    }
+    
+    if (this.CurrentStep >= Game.NUMBER_OF_STEPS)
     {
       return;
     }
@@ -102,31 +107,14 @@ public class Player extends Box {
 
     Acceleration = acc;
     Velocity.add(Acceleration);
-    Velocity.limit(3.5);
+    Velocity.limit(4);
     Position.add(Velocity);
-
-    if (this.IntersectsWith(_goal))
-    {
-      this.HasReachedGoal = true;
-      GOAL_REACHED = true;
-      SOLUTION_FOUND = true;
-      return true;
-    }
-
-    for (var border : _borders)
-    {
-      if (this.IntersectsWith(border))
-      {
-        this.IsAlive = false;
-        break;
-      }
-    }
 
     return true;
   }
 
   public void InitSteps() {
-    for (int i = 0; i < NUMBER_OF_STEPS; i++) {
+    for (int i = 0; i < Game.NUMBER_OF_STEPS; i++) {
       this.Steps[i] = PVector.fromAngle(random(2*PI));
     }
   }
@@ -137,17 +125,33 @@ public class Player extends Box {
     this.HasReachedGoal = false;
     this.Velocity = new PVector(0,0);
     this.Acceleration = new PVector(0,0);
-    this.Position = _startingPoint.copy();
+    this.Position = _Game.StartingPoint.copy();
   }
 
-  public void InheritStepsFrom(Player player)
-  {
-    if (player == this) {
-      return;
+  public void InheritStepsFrom(Player[] parents) {
+    float totalFitness = 0;
+    for (Player parent : parents) {
+      totalFitness += parent.Fitness;
     }
-
-    for (int i = 0; i < player.Steps.length; i++) {
-      this.Steps[i] = player.Steps[i].copy();
+    
+    for (int i = 0; i < Game.NUMBER_OF_STEPS; i++) {
+      float randomPick = random(totalFitness);
+      float runningSum = 0;
+      Player chosenParent = null;
+      for (Player parent : parents) {
+        runningSum += parent.Fitness;
+          
+        if (runningSum >= randomPick) {
+          chosenParent = parent;
+          break;
+        }
+      }
+        
+      if (chosenParent == null) {
+          chosenParent = parents[0];
+      }
+        
+      this.Steps[i] = chosenParent.Steps[i].copy();
     }
   }
 }
