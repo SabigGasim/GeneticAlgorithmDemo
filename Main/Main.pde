@@ -15,9 +15,7 @@ void draw()
 {
   if (iterations == 50)
   {
-    fill(color(252, 194, 3));
-    text("Steps optimization complete!", width/2, height/2);
-    noLoop();
+    PrintOptimizationComplete();
     return;
   }
   
@@ -30,7 +28,7 @@ void draw()
     _Game.Crossover();
     _Game.MutateBabies();
     _Game.PopulateNewGeneration();
-    print("Iterations: " + ++iterations);
+    println("Iterations: " + ++iterations);
   }
 
   _Game.DrawMap();

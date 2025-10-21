@@ -26,3 +26,10 @@ void mouseReleased() {
     loop();
   }
 }
+
+void PrintOptimizationComplete()
+{
+  fill(color(252, 194, 3));
+  text("Steps optimization complete!", width/2, height/2);
+  noLoop();
+}
