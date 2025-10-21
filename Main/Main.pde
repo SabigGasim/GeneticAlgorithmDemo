@@ -9,22 +9,23 @@ void setup() {
 }
 
 Game _Game = new Game();
+int iterations = 0;
 
 void draw() {
   background(92, 65, 25);
 
-  if (_Game.HasEnded())
+  if (_Game.HasEnded() && iterations < 50)
   {
     _Game.CalculateFitness();
     _Game.NaturalSelection();
     _Game.Crossover();
     _Game.MutateBabies();
     _Game.PopulateNewGeneration();
+    iterations++;
   }
 
   _Game.DrawMap();
   _Game.TakeNextStep();
-  //text(Integer.toString(mouseX) + ", " + Integer.toString(mouseY), width/2, height/2);
 }
 
 
