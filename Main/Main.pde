@@ -1,4 +1,5 @@
 int FrameRate = 120;
+Game _Game = new Game();
 
 void setup() {
   size(600, 800);
@@ -8,52 +9,29 @@ void setup() {
   _Game.InitializePopulation();
 }
 
-Game _Game = new Game();
 int iterations = 0;
 
-void draw() {
+void draw()
+{
+  if (iterations == 50)
+  {
+    fill(color(252, 194, 3));
+    text("Steps optimization complete!", width/2, height/2);
+    return;
+  }
+  
   background(92, 65, 25);
 
-  if (_Game.HasEnded() && iterations < 50)
+  if (_Game.HasEnded())
   {
     _Game.CalculateFitness();
     _Game.NaturalSelection();
     _Game.Crossover();
     _Game.MutateBabies();
     _Game.PopulateNewGeneration();
-    iterations++;
+    print("Iterations: " + ++iterations);
   }
 
   _Game.DrawMap();
   _Game.TakeNextStep();
-}
-
-
-final float SCROLL_FACTOR = 1.1;
-
-void mouseWheel(MouseEvent event) {
-  float scrollCount = event.getCount();
-  
-  if (scrollCount < 0) {
-    FrameRate *= SCROLL_FACTOR; 
-  } else if (scrollCount > 0) {
-    FrameRate /= SCROLL_FACTOR;
-  }
-  FrameRate = constrain(FrameRate, 5, 2000);
-  println("Frame rate: " + FrameRate);
-  frameRate(FrameRate);
-}
-
-void mousePressed() {
-  if (mouseButton == LEFT) 
-  {
-    noLoop();
-  }
-}
-
-void mouseReleased() {
-  if (mouseButton == LEFT) 
-  {
-    loop();
-  }
 }
