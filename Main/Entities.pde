@@ -96,38 +96,28 @@ public class Player extends Box {
         float centerY = rectY + (rectH/2);
 
         strokeWeight(1);
+        
         if (!this.IsAlive) 
-        {
           fill(color(250, 47, 47));
-        }
         else if (this.IsParent == true) 
-        {
-            fill(color(100, 200, 100));
-        } 
+          fill(color(100, 200, 100));
         else
-        {
-            fill(color(202, 169, 13)); 
-        }
+          fill(color(202, 169, 13)); 
         
         rect(rectX, rectY, rectW, rectH); 
-        
         fill(color(0, 0, 0));
-        
         rect(centerX - 4, centerY - 3, 2, 2);
-        
         rect(centerX + 2, centerY - 3, 2, 2);
-        
-        
         strokeWeight(1);
         noFill();       
         stroke(0);      
         
-        if (this.IsParent == true) {
-            arc(centerX, centerY + 3, 10, 8, PConstants.PI / 6, 5 * PConstants.PI / 6);
-        } 
-        else {
-            arc(centerX, centerY + 6, 10, 8, 7 * PConstants.PI / 6, 11 * PConstants.PI / 6);
-        }
+        if (!this.IsAlive) 
+          arc(centerX, centerY + 6, 10, 8, 7 * PConstants.PI / 6, 11 * PConstants.PI / 6);
+        else if (this.IsParent) 
+          arc(centerX, centerY + 2, 10, 8, PConstants.PI / 6, 5 * PConstants.PI / 6);
+        else
+          line(centerX - 4, centerY + 4, centerX + 4, centerY + 4);
     }
 
   public void TakeNextStep() {
