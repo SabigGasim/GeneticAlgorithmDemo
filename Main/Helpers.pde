@@ -8,7 +8,7 @@ void mouseWheel(MouseEvent event) {
   } else if (scrollCount > 0) {
     FrameRate /= SCROLL_FACTOR;
   }
-  FrameRate = constrain(FrameRate, 5, 2000);
+  FrameRate = constrain(FrameRate, 10, 2000);
   println("Frame rate: " + FrameRate);
   frameRate(FrameRate);
 }
