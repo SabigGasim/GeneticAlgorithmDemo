@@ -13,7 +13,7 @@ int iterations = 0;
 
 void draw()
 {
-  if (iterations == 50)
+  if (iterations == 25)
   {
     PrintOptimizationComplete();
     return;

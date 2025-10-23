@@ -82,6 +82,63 @@ public class Player extends Box {
   protected void Fill(){
     fill(this.IsParent ? this.ParentColor : this.Color);
   }
+  
+  @Override
+    public void Draw() {
+        Fill();
+
+        // Define bounding box variables
+        float rectX = this.Position.x;
+        float rectY = this.Position.y;
+        float rectW = this.Width;
+        float rectH = this.Height;
+
+        // Calculate a center point. Note: This calculation (X + W, Y + H) 
+        // places the center at the bottom-right corner of the rect, not the geometric center.
+        float centerX = rectX + (rectW/2);
+        float centerY = rectY + (rectH/2);
+
+                 if (this.IsParent == true) {
+            // GREEN and HAPPY face (Condition: IsParent == true)
+            strokeWeight(1);
+            fill(color(100, 200, 100)); // Green color for Parent
+        } else {
+            // ORANGE and SAD face (Condition: IsParent == false)
+            strokeWeight(1);
+            // Original Orange Color: (202, 169, 13)
+            fill(color(202, 169, 13)); 
+        }
+        
+        // Draw the main rectangle face (20x20)
+        rect(rectX, rectY, rectW, rectH); 
+        
+        // Set fill to black for the eyes
+        fill(color(0, 0, 0));
+        
+        // Draw left eye - Adjusted positions for the smaller 20x20 size
+        rect(centerX - 4, centerY - 3, 2, 2);
+        
+        // Draw right eye
+        rect(centerX + 2, centerY - 3, 2, 2);
+        
+        // --- Drawing the conditional mouth ---
+        
+        // Set stroke for the mouth feature
+        strokeWeight(1); // Thinner stroke for the smaller face
+        noFill();        // Ensure the arc itself isn't filled
+        stroke(0);       // Black stroke
+        
+        // Draw the conditional arc (smile or frown)
+        // x, y (center of arc), width, height, startAngle, endAngle
+        
+        if (this.IsParent == true) {
+            // HAPPY SMILE (PI/6 to 5*PI/6 is a downward-facing arc, visually smiling)
+            arc(centerX, centerY + 3, 10, 8, PConstants.PI / 6, 5 * PConstants.PI / 6);
+        } else {
+            // SAD FROWN (Invert the angles: 7*PI/6 to 11*PI/6 is an upward-facing arc, visually frowning)
+            arc(centerX, centerY + 6, 10, 8, 7 * PConstants.PI / 6, 11 * PConstants.PI / 6);
+        }
+    }
 
   public void TakeNextStep() {
     if(this.HasReachedGoal)

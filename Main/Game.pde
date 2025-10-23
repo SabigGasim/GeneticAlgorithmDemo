@@ -15,7 +15,7 @@ public class Game
   public static final int Height = 800;
   public static final int NUMBER_OF_STEPS = 1000;
   public static final int NUMBER_OF_PLAYERS = 1000;
-  public static final int NUMBER_OF_PARENTS = 10;
+  public static final int NUMBER_OF_PARENTS = 5;
   public static final float MUTATION_RATE = 0.01;
   public Boolean GOAL_REACHED = false;
   public Boolean SOLUTION_FOUND = false;
@@ -65,7 +65,7 @@ public class Game
     color playerColor = color(202, 209, 13);
     for (int i = 0; i < NUMBER_OF_PLAYERS; i++)
     {
-      Players[i] = new Player(StartingPoint.x, StartingPoint.y, 10, 10, playerColor, color(0, 0, 0));
+      Players[i] = new Player(StartingPoint.x, StartingPoint.y, 20, 20, playerColor, color(0, 0, 0));
     }
   }
   
