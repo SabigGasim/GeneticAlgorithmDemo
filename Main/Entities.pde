@@ -97,12 +97,15 @@ public class Player extends Box {
 
         strokeWeight(1);
         
-        if (!this.IsAlive) 
-          fill(color(250, 47, 47));
+        if (!this.IsAlive)
+          if(!this.IsParent)
+            fill(color(250, 47, 47)); //DEAD BABY: RED
+          else
+            fill(color(219, 219, 33)); //DEAD PARENT: GOLD
         else if (this.IsParent == true) 
-          fill(color(100, 200, 100));
+          fill(color(100, 200, 100)); //ALIVE PARENT: GREEN
         else
-          fill(color(202, 169, 13)); 
+          fill(color(202, 169, 13)); //ALIVE BABY: ORANGE
         
         rect(rectX, rectY, rectW, rectH); 
         fill(color(0, 0, 0));
